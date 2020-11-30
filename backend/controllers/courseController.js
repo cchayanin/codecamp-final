@@ -19,51 +19,46 @@ const getCourse = async (req, res) => {
 }
 
 const createCourse = async (req, res) => {
-	if (await checkNotExistPrimaryKey(req, res)) {
-		const newCourse = await db.Course.create({
+	// * check record exists.
+	const targetCourse = await db.Course.findOne({
+		where: {
+			type_round: req.body.type_round,
+		},
+	})
+
+	if (targetCourse) {
+		res.status(400).send({ message: 'Course already exists.' })
+	} else {
+		await db.Course.create({
 			...req.body,
 		})
-		res.status(201).send(newCourse)
-	} else {
-		res.status(400).send({ message: 'Primary Key already exists.' })
+		res.status(201).send({ message: 'Course was created' })
 	}
 }
 
-const checkNotExistPrimaryKey = async (req, res) => {
-	const targetPrimaryKey = req.body.type_round
-	const targetCourse = await db.Course.findOne({
-		where: {
-			type_round: targetPrimaryKey,
-		},
-	})
-	if (targetCourse) return false
-	return true
-}
-
 const updateCourse = async (req, res) => {
-	const targetId = req.params.id
+	// * check record exists.
 	const targetCourse = await db.Course.findOne({
 		where: {
-			type_round: targetId,
+			type_round: req.params.id,
 		},
 	})
 
 	if (targetCourse) {
 		await targetCourse.update({
-			type_round: targetId,
 			...req.body,
 		})
 		res.status(200).send({ message: 'Updating was success.' })
 	} else {
-		res.status(404).send({ message: 'Course not found.' })
+		res.status(404).send({ message: 'Course was not found.' })
 	}
 }
 
 const deleteCourse = async (req, res) => {
-	const targetId = req.params.id
+	// * check record exists.
 	const targetCourse = await db.Course.findOne({
 		where: {
-			type_round: targetId,
+			type_round: req.params.id,
 		},
 	})
 
@@ -71,7 +66,7 @@ const deleteCourse = async (req, res) => {
 		await targetCourse.destroy()
 		res.status(204).send()
 	} else {
-		res.status(404).send({ message: 'Course not found.' })
+		res.status(404).send({ message: 'Course was not found.' })
 	}
 }
 

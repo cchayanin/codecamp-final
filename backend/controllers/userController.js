@@ -1,24 +1,46 @@
-const getAllUser = (req, res) => {
-	res.status(200).send('getAllUser')
+const db = require('../models')
+
+const getAllUser = async (req, res) => {
+	const users = await db.User.findAll()
+	res.status(200).send(users)
 }
 
-const getUser = (req, res) => {
-	res.status(200).send('getUser')
+const createUser = async (req, res) => {
+	// * check record exists.
+	const targetUser = await db.User.findOne({
+		where: {
+			username: req.body.username,
+		},
+	})
+
+	if (targetUser) {
+		res.status(400).send({ message: 'User already exists.' })
+	} else {
+		await db.User.create({
+			...req.body,
+		})
+		res.status(201).send({ message: 'User was created' })
+	}
 }
-const createUser = (req, res) => {
-	res.status(200).send('createUser')
-}
-const updateUser = (req, res) => {
-	res.status(200).send('updateUser')
-}
-const deleteUser = (req, res) => {
-	res.status(200).send('deleteUser')
+
+const deleteUser = async (req, res) => {
+	// * check record exists.
+	const targetUser = await db.User.findOne({
+		where: {
+			id: req.params.id,
+		},
+	})
+
+	if (targetUser) {
+		await targetUser.destroy()
+		res.status(204).send()
+	} else {
+		res.status(404).send({ message: 'User not found.' })
+	}
 }
 
 module.exports = {
 	getAllUser,
-	getUser,
 	createUser,
-	updateUser,
 	deleteUser,
 }

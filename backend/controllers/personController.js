@@ -18,56 +18,51 @@ const getPerson = async (req, res) => {
 	}
 }
 const createPerson = async (req, res) => {
-	if (await checkNotExistPrimaryKey(req, res)) {
-		const newPerson = await db.Person.create({
+	// * check record exists.
+	const targetPerson = await db.Person.findOne({
+		where: {
+			citizen_id: req.body.citizen_id,
+		},
+	})
+
+	if (targetPerson) {
+		res.status(400).send({ message: 'Person already exists.' })
+	} else {
+		await db.Person.create({
 			...req.body,
 		})
-		res.status(201).send(newPerson)
-	} else {
-		res.status(400).send({ message: 'Primary Key already exists.' })
+		res.status(201).send({ message: 'Person was created' })
 	}
 }
 
-const checkNotExistPrimaryKey = async (req, res) => {
-	const targetPrimaryKey = req.body.citizen_id
-	const targetPerson = await db.Person.findOne({
-		where: {
-			citizen_id: targetPrimaryKey,
-		},
-	})
-	if (targetPerson) return false
-	return true
-}
-
 const updatePerson = async (req, res) => {
-	const targetId = req.params.id
+	// * check record exists.
 	const targetPerson = await db.Person.findOne({
 		where: {
-			citizen_id: targetId,
+			citizen_id: req.params.id,
 		},
 	})
 
 	if (targetPerson) {
 		await targetPerson.update({
-			citizen_id: targetId,
 			...req.body,
 		})
 		res.status(200).send({ message: 'Updating was success.' })
 	} else {
-		res.status(404).send({ message: 'Person not found.' })
+		res.status(404).send({ message: 'Person was not found.' })
 	}
 }
 const deletePerson = async (req, res) => {
-	const targetId = req.params.id
+	// * check record exists.
 	const targetPerson = await db.Person.findOne({
 		where: {
-			type_round: targetId,
+			citizen_id: req.params.id,
 		},
 	})
 
 	if (targetPerson) {
 		await targetPerson.destroy()
-		res.status(200).send()
+		res.status(204).send()
 	} else {
 		res.status(404).send({ message: 'Person not found.' })
 	}

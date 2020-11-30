@@ -6,43 +6,35 @@ const getAllRegister = async (req, res) => {
 }
 
 const createRegister = async (req, res) => {
-	if (await checkNotExistPrimaryKey(req, res)) {
-		const newRegister = await db.Register.create({
+	// * check record exists.
+	const targetRegister = await db.Register.findOne({
+		where: {
+			type_round: req.body.type_round,
+			citizen_id: req.body.citizen_id,
+		},
+	})
+
+	if (targetRegister) {
+		res.status(400).send({ message: 'Register already exists.' })
+	} else {
+		await db.Register.create({
 			...req.body,
 		})
-		res.status(201).send(newRegister)
-	} else {
-		res.status(400).send({ message: 'Primary Key already exists.' })
+		res.status(201).send({ message: 'Register was created' })
 	}
 }
 
-const checkNotExistPrimaryKey = async (req, res) => {
-	const targetTypeRound = req.body.type_round
-	const targetCitizenId = req.body.citizen_id
-	const targetRegister = await db.Register.findOne({
-		where: {
-			type_round: targetTypeRound,
-			citizen_id: targetCitizenId,
-		},
-	})
-	if (targetRegister) return false
-	return true
-}
-
 const updateRegister = async (req, res) => {
-	const targetTypeRound = req.params.typeRound
-	const targetCitizenId = req.params.id
+	// * check record exists.
 	const targetRegister = await db.Register.findOne({
 		where: {
-			type_round: targetTypeRound,
-			citizen_id: targetCitizenId,
+			type_round: req.params.typeRound,
+			citizen_id: req.params.id,
 		},
 	})
 
 	if (targetRegister) {
 		await targetRegister.update({
-			type_round: targetTypeRound,
-			citizen_id: targetCitizenId,
 			...req.body,
 		})
 		res.status(200).send({ message: 'Updating was success.' })
@@ -51,18 +43,17 @@ const updateRegister = async (req, res) => {
 	}
 }
 const deleteRegister = async (req, res) => {
-	const targetTypeRound = req.params.typeRound
-	const targetCitizenId = req.params.id
+	// * check record exists.
 	const targetRegister = await db.Register.findOne({
 		where: {
-			type_round: targetTypeRound,
-			citizen_id: targetCitizenId,
+			type_round: req.params.typeRound,
+			citizen_id: req.params.id,
 		},
 	})
 
 	if (targetRegister) {
 		await targetRegister.destroy()
-		res.status(200).send()
+		res.status(204).send()
 	} else {
 		res.status(404).send({ message: 'Register not found.' })
 	}

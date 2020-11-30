@@ -23,7 +23,7 @@ content-type: application/json
 }
 ###
 
-PUT http://localhost:8000/registers/B001/3a51b357
+PATCH http://localhost:8000/registers/B001/3a51b357
 content-type: application/json
 
 {

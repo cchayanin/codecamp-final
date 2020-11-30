@@ -30,16 +30,14 @@ content-type: application/json
 }
 ###
 
-PUT http://localhost:8000/persons/3a51b357
+PATCH http://localhost:8000/persons/3a51b357
 content-type: application/json
 
 {
     "prefix": "Mr.",
-    "give_name":"Dean",
-    "family_name":"Hodges",
     "mobile_phone":"06600666",
     "email":"rof@vaf.fk"
 }
 ###
 
-DELETE http://localhost:8000/courses/3a51b357
+DELETE http://localhost:8000/persons/3a51b357

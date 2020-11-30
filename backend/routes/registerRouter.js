@@ -1,11 +1,10 @@
-//import router
 const express = require('express')
 const router = express.Router()
 
-//import controller
+// register controller
 const registerController = require('../controllers/registerController')
 
-//destructuring object from controller
+// destructuring object from controller
 const {
 	getAllRegister,
 	getRegister,

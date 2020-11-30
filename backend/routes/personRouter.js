@@ -1,11 +1,10 @@
-//import router
 const express = require('express')
 const router = express.Router()
 
-//import controller
+// person controller
 const personController = require('../controllers/personController')
 
-//destructuring object from controller
+// destructuring object from controller
 const {
 	getAllPerson,
 	getPerson,

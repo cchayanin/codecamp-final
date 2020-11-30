@@ -1,17 +1,16 @@
 const express = require('express')
 const app = express()
 
-// router
-const userRouter = require('./routes/userRouter')
-const courseRouter = require('./routes/courseRouter')
-const personRouter = require('./routes/personRouter')
-const registerRouter = require('./routes/personRouter')
+//database models
+const db = require('./models')
 
-app.use('/users', userRouter)
-app.use('/course', courseRouter)
-app.use('/persons', personRouter)
-app.use('/persons', registerRouter)
+//import routers
+const indexRouter = require('./routes/')
 
-app.listen(8000, () => {
-	console.log('Server is running port 8000')
+app.use('/', indexRouter)
+
+db.sequelize.sync({ force: true }).then(() => {
+	app.listen(8000, () => {
+		console.log('Server is running port 8000')
+	})
 })

@@ -1,11 +1,10 @@
-//import router
 const express = require('express')
 const router = express.Router()
 
-//import controller
+// course controller
 const courseController = require('../controllers/courseController')
 
-//destructuring object from controller
+// destructuring object from controller
 const {
 	getAllCourse,
 	getCourse,

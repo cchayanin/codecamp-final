@@ -14,7 +14,7 @@ const {
 
 router.get('/', getAllRegister)
 router.post('/', createRegister)
-router.put('/:typeRound/:id', updateRegister)
+router.patch('/:typeRound/:id', updateRegister)
 router.delete('/:typeRound/:id', deleteRegister)
 
 module.exports = router

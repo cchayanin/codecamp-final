@@ -16,7 +16,7 @@ const {
 router.get('/', getAllCourse)
 router.get('/:id', getCourse)
 router.post('/', createCourse)
-router.put('/:id', updateCourse)
+router.patch('/:id', updateCourse)
 router.delete('/:id', deleteCourse)
 
 module.exports = router

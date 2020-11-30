@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
 	Course.associate = (models) => {
 		Course.belongsToMany(models.Person, {
 			through: models.Register,
+			foreignKey: 'type_round',
 		})
 	}
 

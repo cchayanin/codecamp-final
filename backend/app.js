@@ -7,9 +7,12 @@ const db = require('./models')
 //import routers
 const indexRouter = require('./routes/')
 
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+
 app.use('/', indexRouter)
 
-db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync({ force: false }).then(() => {
 	app.listen(8000, () => {
 		console.log('Server is running port 8000')
 	})

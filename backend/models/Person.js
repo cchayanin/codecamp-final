@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
 				type: DataTypes.STRING(10),
 			},
 			email: {
-				type: DataTypes.STRING(10),
+				type: DataTypes.STRING(50),
 			},
 			birth_date: {
 				type: DataTypes.DATEONLY,
@@ -70,7 +70,10 @@ module.exports = (sequelize, DataTypes) => {
 	)
 
 	Person.associate = (models) => {
-		Person.belongsToMany(models.Course, { through: models.Register })
+		Person.belongsToMany(models.Course, {
+			through: models.Register,
+			foreignKey: 'citizen_id',
+		})
 	}
 
 	return Person

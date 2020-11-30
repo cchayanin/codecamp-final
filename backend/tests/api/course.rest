@@ -1,5 +1,33 @@
 GET http://localhost:8000/courses
 ###
 
-GET http://localhost:8000/courses/1
+GET http://localhost:8000/courses/B003
+###
 
+POST http://localhost:8000/courses
+content-type: application/json
+
+{
+    "type_round": "B001",
+    "name": "โครงการทดสอบ"
+}
+###
+
+POST http://localhost:8000/courses
+content-type: application/json
+
+{
+    "type_round": "B002",
+    "name": "โครงการทดสอบ 2"
+}
+###
+
+PUT http://localhost:8000/courses/B002
+content-type: application/json
+
+{
+    "name": "โครงการทดสอบแก้ไข 2"
+}
+###
+
+DELETE http://localhost:8000/courses/B001

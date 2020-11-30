@@ -2,10 +2,10 @@ module.exports = (sequelize, DataTypes) => {
 	const Register = sequelize.define(
 		'Register',
 		{
-			paid: {
+			is_paid: {
 				type: DataTypes.BOOLEAN,
 			},
-			sponsor: {
+			is_sponsor: {
 				type: DataTypes.BOOLEAN,
 			},
 		},

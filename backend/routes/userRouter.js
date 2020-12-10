@@ -5,10 +5,11 @@ const router = express.Router()
 const userController = require('../controllers/userController')
 
 //destructuring object from controller
-const { getAllUser, createUser, deleteUser } = userController
+const { getAllUser, createUser, updateUser, deleteUser } = userController
 
 router.get('/', getAllUser)
 router.post('/', createUser)
+router.patch('/:id', updateUser)
 router.delete('/:id', deleteUser)
 
 module.exports = router

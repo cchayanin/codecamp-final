@@ -23,6 +23,24 @@ const createUser = async (req, res) => {
 	}
 }
 
+const updateUser = async (req, res) => {
+	// * check record exists.
+	const targetUser = await db.User.findOne({
+		where: {
+			id: req.params.id,
+		},
+	})
+
+	if (targetUser) {
+		await targetUser.update({
+			...req.body,
+		})
+		res.status(200).send({ message: 'Updating was success.' })
+	} else {
+		res.status(404).send({ message: 'User was not found.' })
+	}
+}
+
 const deleteUser = async (req, res) => {
 	// * check record exists.
 	const targetUser = await db.User.findOne({
@@ -42,5 +60,6 @@ const deleteUser = async (req, res) => {
 module.exports = {
 	getAllUser,
 	createUser,
+	updateUser,
 	deleteUser,
 }

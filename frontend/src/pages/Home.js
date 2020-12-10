@@ -1,10 +1,10 @@
-import Template from '../components/Templates/Template'
-import HomeComponent from '../components/HomeComponents/HomeComponent'
+import Template from '../components/Templates/MainTemplate/Template'
+import HomeComponent from '../components/HomeComponents'
 
 export default function Home() {
 	return (
-		<div>
+		<>
 			<Template Component={HomeComponent} />
-		</div>
+		</>
 	)
 }

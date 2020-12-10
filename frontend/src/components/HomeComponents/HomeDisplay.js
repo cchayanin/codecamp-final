@@ -2,7 +2,7 @@ import axios from '../../configs/axios'
 import { useState, useEffect } from 'react'
 import { Table } from 'antd'
 
-export default function HomeComponent() {
+export default function HomeDisplay() {
 	const [registers, setRegisters] = useState([])
 	const fetchRegisters = async () => {
 		const httpResponse = await axios.get('/registers')

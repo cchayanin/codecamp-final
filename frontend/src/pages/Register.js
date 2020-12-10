@@ -1,10 +1,10 @@
-import Template from '../components/Templates/Template'
-import RegisterComponent from '../components/RegisterComponents/RegisterComponent'
+import Template from '../components/Templates/MainTemplate/Template'
+import RegisterComponent from '../components/RegisterComponents'
 
 export default function Register() {
 	return (
-		<div>
+		<>
 			<Template Component={RegisterComponent} />
-		</div>
+		</>
 	)
 }

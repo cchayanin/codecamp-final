@@ -1,7 +1,9 @@
 const db = require('../models')
 
 const getAllRegister = async (req, res) => {
-	const registers = await db.Register.findAll()
+	const registers = await db.Register.findAll({
+		include: [db.Person, db.Course],
+	})
 	res.status(200).send(registers)
 }
 
@@ -28,7 +30,7 @@ const updateRegister = async (req, res) => {
 	// * check record exists.
 	const targetRegister = await db.Register.findOne({
 		where: {
-			type_round: req.params.typeRound,
+			type_round: req.params.type_round,
 			citizen_id: req.params.id,
 		},
 	})
@@ -46,7 +48,7 @@ const deleteRegister = async (req, res) => {
 	// * check record exists.
 	const targetRegister = await db.Register.findOne({
 		where: {
-			type_round: req.params.typeRound,
+			type_round: req.params.type_round,
 			citizen_id: req.params.id,
 		},
 	})

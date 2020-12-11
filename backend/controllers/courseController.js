@@ -8,7 +8,7 @@ const getAllCourse = async (req, res) => {
 const getCourse = async (req, res) => {
 	const course = await db.Course.findOne({
 		where: {
-			type_round: req.params.id,
+			type_round: req.params.type_round,
 		},
 	})
 	if (course) {
@@ -40,7 +40,7 @@ const updateCourse = async (req, res) => {
 	// * check record exists.
 	const targetCourse = await db.Course.findOne({
 		where: {
-			type_round: req.params.id,
+			type_round: req.params.type_round,
 		},
 	})
 
@@ -58,7 +58,7 @@ const deleteCourse = async (req, res) => {
 	// * check record exists.
 	const targetCourse = await db.Course.findOne({
 		where: {
-			type_round: req.params.id,
+			type_round: req.params.type_round,
 		},
 	})
 

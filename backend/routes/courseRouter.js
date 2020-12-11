@@ -14,9 +14,9 @@ const {
 } = courseController
 
 router.get('/', getAllCourse)
-router.get('/:id', getCourse)
+router.get('/:type_round', getCourse)
 router.post('/', createCourse)
-router.patch('/:id', updateCourse)
-router.delete('/:id', deleteCourse)
+router.patch('/:type_round', updateCourse)
+router.delete('/:type_round', deleteCourse)
 
 module.exports = router

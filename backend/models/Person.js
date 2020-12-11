@@ -70,8 +70,7 @@ module.exports = (sequelize, DataTypes) => {
 	)
 
 	Person.associate = (models) => {
-		Person.belongsToMany(models.Course, {
-			through: models.Register,
+		Person.hasMany(models.Register, {
 			foreignKey: 'citizen_id',
 		})
 	}

@@ -1,17 +1,12 @@
 require('dotenv').config()
+require('./config/passport/passport')
 
 const express = require('express')
 const app = express()
-
-// import cors
 const cors = require('cors')
+const bcryptjs = require('bcryptjs')
 
-//database models
 const db = require('./models')
-
-require('./config/passport/passport')
-
-//import routers
 const indexRouter = require('./routes/')
 
 app.use(cors())
@@ -21,7 +16,18 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use('/', indexRouter)
 
-db.sequelize.sync({ force: false }).then(() => {
+db.sequelize.sync({ force: true }).then(async () => {
+	const salt = bcryptjs.genSaltSync(12)
+	const hashedPassword = bcryptjs.hashSync(process.env.PASSWORD, salt)
+	try {
+		await db.User.create({
+			username: 'admin',
+			password: hashedPassword,
+			name: 'Super Admin',
+			is_admin: true,
+		})
+	} catch (error) {}
+
 	app.listen(process.env.PORT, () => {
 		console.log(`Server is running port ${process.env.PORT}`)
 	})

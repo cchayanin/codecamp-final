@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express')
 const app = express()
 
@@ -6,6 +8,8 @@ const cors = require('cors')
 
 //database models
 const db = require('./models')
+
+require('./config/passport/passport')
 
 //import routers
 const indexRouter = require('./routes/')
@@ -18,7 +22,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use('/', indexRouter)
 
 db.sequelize.sync({ force: false }).then(() => {
-	app.listen(8000, () => {
-		console.log('Server is running port 8000')
+	app.listen(process.env.PORT, () => {
+		console.log(`Server is running port ${process.env.PORT}`)
 	})
 })

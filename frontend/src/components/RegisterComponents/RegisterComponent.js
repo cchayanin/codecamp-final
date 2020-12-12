@@ -20,7 +20,6 @@ export default function RegisterComponent() {
 	const [isEdit, setIsEdit] = useState(false)
 	const [form] = Form.useForm()
 	const path = '/registers'
-	// const rowKey = 'citizen_id'
 
 	const fetchData = async () => {
 		const response = await axios.get(path)
@@ -67,15 +66,21 @@ export default function RegisterComponent() {
 
 	const columns = [
 		{
-			title: 'รุ่นที่',
-			dataIndex: 'type_round',
+			title: 'โครงการอบรม',
+			dataIndex: 'Course',
 			key: 'type_round',
 			sorter: (a, b) => a.type_round.localeCompare(b.type_round),
+			render: (record) => {
+				return <span>{`${record.name}`}</span>
+			},
 		},
 		{
 			title: 'ผู้เข้ารับการอบรม',
-			dataIndex: 'citizen_id',
+			dataIndex: 'Person',
 			key: 'citizen_id',
+			render: (record) => {
+				return <span>{`${record.give_name} ${record.family_name}`}</span>
+			},
 		},
 		{
 			title: 'ค่าธรรมเนียม',
@@ -176,10 +181,10 @@ export default function RegisterComponent() {
 			>
 				<Form form={form} layout='vertical'>
 					<Form.Item label='รุ่นที่' name='type_round'>
-						<Input />
+						<Input disabled={isEdit} />
 					</Form.Item>
 					<Form.Item label='ผู้เข้ารับการอบรม' name='citizen_id'>
-						<Input />
+						<Input disabled={isEdit} />
 					</Form.Item>
 					<Form.Item
 						label='ค่าธรรมเนียม'

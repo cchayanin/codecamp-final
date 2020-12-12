@@ -181,7 +181,7 @@ export default function CourseComponent() {
 						<DatePicker format={dateFormat} />
 					</Form.Item>
 					<Form.Item name='end_date' label='วันที่สิ้นสุด'>
-						<DatePicker format={dateFormat} in />
+						<DatePicker format={dateFormat} />
 					</Form.Item>
 				</Form>
 			</Modal>

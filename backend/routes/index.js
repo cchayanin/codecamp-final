@@ -6,10 +6,16 @@ const userRouter = require('./userRouter')
 const courseRouter = require('./courseRouter')
 const personRouter = require('./personRouter')
 const registerRouter = require('./registerRouter')
+const loginRouter = require('./loginRouter')
 
-router.use('/users', userRouter)
-router.use('/courses', courseRouter)
-router.use('/persons', personRouter)
-router.use('/registers', registerRouter)
+// passport authentication
+const passport = require('passport')
+const authentication = passport.authenticate('jwt', { session: false })
+
+router.use('/users', authentication, userRouter)
+router.use('/courses', authentication, courseRouter)
+router.use('/persons', authentication, personRouter)
+router.use('/registers', authentication, registerRouter)
+router.use('/login', loginRouter)
 
 module.exports = router

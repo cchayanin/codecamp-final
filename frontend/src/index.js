@@ -8,18 +8,18 @@ import App from './App'
 
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import reducer from './reducers'
+import reducer from './reducer'
 
 import reportWebVitals from './reportWebVitals'
 
 const store = createStore(reducer)
 
 ReactDOM.render(
-	<BrowserRouter>
-		<Provider store={store}>
+	<Provider store={store}>
+		<BrowserRouter>
 			<App />
-		</Provider>
-	</BrowserRouter>,
+		</BrowserRouter>
+	</Provider>,
 	document.getElementById('root'),
 )
 

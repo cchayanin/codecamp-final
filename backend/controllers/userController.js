@@ -16,8 +16,11 @@ const createUser = async (req, res) => {
 	if (targetUser) {
 		res.status(400).send({ message: 'User already exists.' })
 	} else {
+		const salt = bcryptjs.genSaltSync(12)
+		const hashedPassword = bcryptjs.hashSync(req.body.password, salt)
 		await db.User.create({
 			...req.body,
+			password: hashedPassword,
 		})
 		res.status(201).send({ message: 'User was created' })
 	}

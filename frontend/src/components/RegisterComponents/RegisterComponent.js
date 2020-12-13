@@ -109,12 +109,13 @@ export default function RegisterComponent() {
 			key: 'type_round',
 			align: 'center',
 			sorter: (a, b) => a.type_round.localeCompare(b.type_round),
+			sortDirections: ['descend'],
 			render: (record) => {
 				return <span>{`${record.name}`}</span>
 			},
 		},
 		{
-			title: 'ผู้เข้ารับการอบรม',
+			title: 'ผู้เข้าอบรม',
 			dataIndex: 'Person',
 			key: 'citizen_id',
 			align: 'center',
@@ -153,6 +154,7 @@ export default function RegisterComponent() {
 			dataIndex: '',
 			key: 'edit',
 			align: 'center',
+			width: '15%',
 			render: (record) => (
 				<>
 					<Button
@@ -176,6 +178,7 @@ export default function RegisterComponent() {
 			dataIndex: '',
 			key: 'delete',
 			align: 'center',
+			width: '15%',
 			render: (record) => (
 				<>
 					<Popconfirm
@@ -213,19 +216,24 @@ export default function RegisterComponent() {
 				title='บันทึกข้อมูลการลงทะเบียน'
 				okText={isEdit ? 'Edit' : 'Create'}
 				cancelText='Cancel'
-				onOk={(record) => {
-					if (isEdit) {
-						updateRecord(
-							form.getFieldValue('type_round'),
-							form.getFieldValue('citizen_id'),
-						)
-					} else {
-						createRecord()
-					}
+				onOk={() => {
+					form
+						.validateFields()
+						.then(() => {
+							if (isEdit) {
+								updateRecord(
+									form.getFieldValue('type_round'),
+									form.getFieldValue('citizen_id'),
+								)
+							} else {
+								createRecord()
+							}
 
-					setIsEdit(false)
-					form.resetFields()
-					hideModal()
+							setIsEdit(false)
+							form.resetFields()
+							hideModal()
+						})
+						.catch((info) => {})
 				}}
 				onCancel={() => {
 					setIsEdit(false)
@@ -234,10 +242,18 @@ export default function RegisterComponent() {
 				}}
 			>
 				<Form form={form} layout='vertical'>
-					<Form.Item label='รุ่นที่' name='type_round'>
+					<Form.Item
+						label='รหัสโครงการ'
+						name='type_round'
+						rules={[{ required: true, message: 'ต้องระบุรหัสโครงการ' }]}
+					>
 						<Input disabled={isEdit} />
 					</Form.Item>
-					<Form.Item label='ผู้เข้ารับการอบรม' name='citizen_id'>
+					<Form.Item
+						label='ผู้เข้าอบรม'
+						name='citizen_id'
+						rules={[{ required: true, message: 'ผู้เข้าอบรม' }]}
+					>
 						<Input disabled={isEdit} />
 					</Form.Item>
 					<Form.Item

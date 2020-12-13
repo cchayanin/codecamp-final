@@ -106,11 +106,12 @@ export default function PersonComponent() {
 
 	const columns = [
 		{
-			title: 'เลขประจำตัวประชาชน',
+			title: 'เลขประจำตัว',
 			dataIndex: 'citizen_id',
 			key: 'citizen_id',
 			align: 'center',
 			sorter: (a, b) => a.citizen_id.localeCompare(b.citizen_id),
+			sortDirections: ['descend'],
 		},
 		{
 			title: 'คำนำหน้าชื่อ',
@@ -214,16 +215,21 @@ export default function PersonComponent() {
 				title='บันทึกข้อมูลผู้เข้าอบรม'
 				okText={isEdit ? 'Edit' : 'Create'}
 				cancelText='Cancel'
-				onOk={(record) => {
-					if (isEdit) {
-						updateRecord(form.getFieldValue('citizen_id'))
-					} else {
-						createRecord()
-					}
+				onOk={() => {
+					form
+						.validateFields()
+						.then(() => {
+							if (isEdit) {
+								updateRecord(form.getFieldValue('citizen_id'))
+							} else {
+								createRecord()
+							}
 
-					setIsEdit(false)
-					form.resetFields()
-					hideModal()
+							setIsEdit(false)
+							form.resetFields()
+							hideModal()
+						})
+						.catch((info) => {})
 				}}
 				onCancel={() => {
 					setIsEdit(false)
@@ -233,16 +239,22 @@ export default function PersonComponent() {
 			>
 				<Form form={form} layout='vertical'>
 					<Form.Item
-						label='หมายเลขประจำตัวประชาชน'
+						label='เลขประจำตัว'
 						name='citizen_id'
-						rules={[{ required: true }]}
+						rules={[
+							{ required: true, message: 'ต้องระบุเลขประจำตัว' },
+							{
+								pattern: /[0-9]{13}/,
+								message: 'เลขประจำตัวต้องเป็นตัวเลขและมี 13หลัก เท่านั้น',
+							},
+						]}
 					>
 						<Input disabled={isEdit} />
 					</Form.Item>
 					<Form.Item
 						label='คำนำหน้าชื่อ'
 						name='prefix'
-						rules={[{ required: true }]}
+						rules={[{ required: true, message: 'ต้องระบุคำนำหน้าชื่อ' }]}
 					>
 						<Select>
 							<Option value='นาย'>นาย</Option>
@@ -250,31 +262,42 @@ export default function PersonComponent() {
 							<Option value='นางสาว'>นางสาว</Option>
 						</Select>
 					</Form.Item>
-					<Form.Item label='ชื่อ' name='give_name' rules={[{ required: true }]}>
+					<Form.Item
+						label='ชื่อ'
+						name='give_name'
+						rules={[{ required: true, message: 'ต้องระบุชื่อ' }]}
+					>
 						<Input />
 					</Form.Item>
 					<Form.Item
 						label='นามสกุล'
 						name='family_name'
-						rules={[{ required: true }]}
+						rules={[{ required: true, message: 'ต้องระบุนามสกุล' }]}
 					>
 						<Input />
 					</Form.Item>
 					<Form.Item
 						label='ชื่อเล่น'
 						name='nickname'
-						rules={[{ required: true }]}
+						rules={[{ required: true, message: 'ต้องระบุชื่อเล่น' }]}
 					>
 						<Input />
 					</Form.Item>
 					<Form.Item
-						label='หมายเลขโทรศัพท์มือถือ'
+						label='โทรศัพท์มือถือ'
 						name='mobile_phone'
-						rules={[{ required: true }]}
+						rules={[{ required: true, message: 'ต้องระบุโทรศัพท์มือถือ' }]}
 					>
 						<Input />
 					</Form.Item>
-					<Form.Item label='อีเมล์' name='email' rules={[{ required: true }]}>
+					<Form.Item
+						label='อีเมล์'
+						name='email'
+						rules={[
+							{ required: true, message: 'ต้องระบุอีเมล์' },
+							{ type: 'email', message: 'รูปแบบอีเมล์ไม่ถูกต้อง' },
+						]}
+					>
 						<Input />
 					</Form.Item>
 				</Form>

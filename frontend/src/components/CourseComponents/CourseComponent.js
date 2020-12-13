@@ -107,7 +107,7 @@ export default function CourseComponent() {
 
 	const columns = [
 		{
-			title: 'รุ่นที่',
+			title: 'รหัสโครงการ',
 			dataIndex: 'type_round',
 			key: 'type_round',
 			align: 'center',
@@ -140,6 +140,7 @@ export default function CourseComponent() {
 			dataIndex: '',
 			key: 'edit',
 			align: 'center',
+			width: '15%',
 			render: (record) => (
 				<>
 					<Button
@@ -169,6 +170,7 @@ export default function CourseComponent() {
 			dataIndex: '',
 			key: 'delete',
 			align: 'center',
+			width: '15%',
 			render: (record) => (
 				<>
 					<Popconfirm
@@ -208,16 +210,21 @@ export default function CourseComponent() {
 				title='บันทึกข้อมูลการอบรม'
 				okText={isEdit ? 'Edit' : 'Create'}
 				cancelText='Cancel'
-				onOk={(record) => {
-					if (isEdit) {
-						updateRecord(form.getFieldValue('type_round'))
-					} else {
-						createRecord()
-					}
+				onOk={() => {
+					form
+						.validateFields()
+						.then(() => {
+							if (isEdit) {
+								updateRecord(form.getFieldValue('type_round'))
+							} else {
+								createRecord()
+							}
 
-					setIsEdit(false)
-					form.resetFields()
-					hideModal()
+							setIsEdit(false)
+							form.resetFields()
+							hideModal()
+						})
+						.catch((info) => {})
 				}}
 				onCancel={() => {
 					setIsEdit(false)
@@ -228,12 +235,19 @@ export default function CourseComponent() {
 				<Form form={form} layout='vertical'>
 					<Form.Item
 						name='type_round'
-						label='รุ่นที่'
-						rules={[{ required: true }]}
+						label='รหัสโครงการ'
+						rules={[
+							{ required: true, message: 'ต้องระบุรหัสโครงการ' },
+							{ len: 4, message: 'รหัสโครงการต้องเท่ากับ 4 ตัวอักษร' },
+						]}
 					>
 						<Input disabled={isEdit} />
 					</Form.Item>
-					<Form.Item name='name' label='ชื่อโครงการอบรม'>
+					<Form.Item
+						name='name'
+						label='ชื่อโครงการอบรม'
+						rules={[{ required: true, message: 'ต้องระบุชื่อโครงการอบรม' }]}
+					>
 						<Input />
 					</Form.Item>
 					<Form.Item name='start_date' label='วันที่เริ่มต้น'>

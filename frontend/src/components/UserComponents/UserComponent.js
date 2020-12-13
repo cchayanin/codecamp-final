@@ -20,6 +20,8 @@ export default function PersonComponent() {
 	const [form] = Form.useForm()
 	const path = '/users'
 	const rowKey = 'id'
+	const notificationDuration = 2
+	const notificationPlacement = 'bottomRight'
 
 	const fetchData = async () => {
 		const response = await axios.get(path)
@@ -27,19 +29,64 @@ export default function PersonComponent() {
 	}
 
 	const createRecord = async () => {
-		await axios.post(path, form.getFieldsValue())
+		await axios
+			.post(path, form.getFieldsValue())
+			.then(() => {
+				notification.success({
+					message: 'ข้อมูลถูกเพิ่มเรียบร้อยแล้ว',
+					duration: notificationDuration,
+					placement: notificationPlacement,
+				})
+			})
+			.catch((error) => {
+				notification.error({
+					message: 'การเพิ่มข้อมูลผิดพลาด',
+					duration: notificationDuration,
+					placement: notificationPlacement,
+				})
+			})
 		form.resetFields()
 		fetchData()
 	}
 
 	const updateRecord = async (id) => {
-		await axios.patch(`${path}/${id}`, form.getFieldsValue())
+		await axios
+			.patch(`${path}/${id}`, form.getFieldsValue())
+			.then(() => {
+				notification.success({
+					message: 'ข้อมูลถูกแก้ไขเรียบร้อยแล้ว',
+					duration: notificationDuration,
+					placement: notificationPlacement,
+				})
+			})
+			.catch((error) => {
+				notification.error({
+					message: 'การแก้ไขข้อมูลผิดพลาด',
+					duration: notificationDuration,
+					placement: notificationPlacement,
+				})
+			})
 		form.resetFields()
 		fetchData()
 	}
 
 	const deleteRecord = async (id) => {
-		await axios.delete(`${path}/${id}`)
+		await axios
+			.delete(`${path}/${id}`)
+			.then(() => {
+				notification.success({
+					message: 'ข้อมูลถูกลบเรียบร้อยแล้ว',
+					duration: notificationDuration,
+					placement: notificationPlacement,
+				})
+			})
+			.catch((error) => {
+				notification.error({
+					message: 'การลบข้อมูลผิดพลาด',
+					duration: notificationDuration,
+					placement: notificationPlacement,
+				})
+			})
 		form.resetFields()
 		fetchData()
 	}
@@ -55,32 +102,27 @@ export default function PersonComponent() {
 		setVisible(false)
 	}
 
-	const openNotification = () => {
-		notification.open({
-			message: 'Notification',
-			description: 'Description',
-			duration: 1.5,
-			placement: 'bottomRight',
-		})
-	}
-
 	const columns = [
 		{
 			title: 'ผู้ใช้งาน',
 			dataIndex: 'username',
 			key: 'username',
+			align: 'center',
 			sorter: (a, b) => a.type_round.localeCompare(b.type_round),
 			sortDirections: ['descend'],
 		},
 		{
-			title: 'ชื่อ',
+			title: 'ชื่อผู้ใช้งาน',
 			dataIndex: 'name',
 			key: 'name',
+			align: 'center',
 		},
 		{
 			title: '',
 			dataIndex: '',
 			key: 'edit',
+			align: 'center',
+			width: '15%',
 			render: (record) => (
 				<>
 					<Button
@@ -93,12 +135,22 @@ export default function PersonComponent() {
 					>
 						Edit
 					</Button>
+				</>
+			),
+		},
+		{
+			title: '',
+			dataIndex: '',
+			key: 'edit',
+			align: 'center',
+			width: '15%',
+			render: (record) => (
+				<>
 					<Popconfirm
 						placement='left'
 						title={'Hello'}
 						onConfirm={() => {
 							deleteRecord(record.id)
-							openNotification()
 						}}
 						okText='ตกลง'
 						cancelText='ยกเลิก'
@@ -129,16 +181,21 @@ export default function PersonComponent() {
 				title='Create new'
 				okText='Create'
 				cancelText='Cancel'
-				onOk={(record) => {
-					if (isEdit) {
-						updateRecord(form.getFieldValue('id'))
-					} else {
-						createRecord()
-					}
+				onOk={() => {
+					form
+						.validateFields()
+						.then(() => {
+							if (isEdit) {
+								updateRecord(form.getFieldValue('id'))
+							} else {
+								createRecord()
+							}
 
-					setIsEdit(false)
-					form.resetFields()
-					hideModal()
+							setIsEdit(false)
+							form.resetFields()
+							hideModal()
+						})
+						.catch((info) => {})
 				}}
 				onCancel={() => {
 					setIsEdit(false)

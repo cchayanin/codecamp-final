@@ -22,7 +22,12 @@ const createRegister = async (req, res) => {
 		await db.Register.create({
 			...req.body,
 		})
-		res.status(201).send({ message: 'Register was created' })
+			.then(() => {
+				res.status(201).send({ message: 'Register was created' })
+			})
+			.catch((error) => {
+				res.status(400).send(error)
+			})
 	}
 }
 

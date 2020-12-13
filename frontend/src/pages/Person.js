@@ -4,7 +4,7 @@ import PersonComponent from '../components/PersonComponents'
 export default function Person() {
 	return (
 		<>
-			<Template Component={PersonComponent} />
+			<Template ContentComponent={PersonComponent} />
 		</>
 	)
 }

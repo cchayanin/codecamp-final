@@ -12,10 +12,12 @@ import LocalStorageService from '../../services/localStorageService'
 import axios from '../../configs/axios'
 import { connect } from 'react-redux'
 import jwtDecode from 'jwt-decode'
+import { UserOutlined, UnlockOutlined } from '@ant-design/icons'
 
 function LoginComponent(props) {
 	const [form] = Form.useForm()
 	const { Title } = Typography
+
 	const onFinish = () => {
 		axios
 			.post('/login', form.getFieldsValue())
@@ -26,6 +28,7 @@ function LoginComponent(props) {
 					const user = jwtDecode(token)
 					if (user.is_admin) props.onLogin('admin')
 					props.onLogin('staff')
+					window.location.reload()
 				}
 			})
 			.catch((err) => {
@@ -35,18 +38,21 @@ function LoginComponent(props) {
 	}
 
 	return (
-		<Row justify='center'>
-			<Col>
+		<Row justify='center' className='login-form'>
+			<Col xs={16} sm={12} md={10} lg={8} xl={6} xxl={4}>
 				<Row justify='center'>
-					<Title>Login</Title>
+					<Title level={2}>Course Registration</Title>
 				</Row>
 				<Divider />
 				<Form form={form}>
-					<Form.Item name='username' label='Username'>
-						<Input />
+					<Form.Item name='username'>
+						<Input prefix={<UserOutlined />} placeholder='Username' />
 					</Form.Item>
-					<Form.Item name='password' label='Password'>
-						<Input.Password />
+					<Form.Item name='password'>
+						<Input.Password
+							prefix={<UnlockOutlined />}
+							placeholder='Password'
+						/>
 					</Form.Item>
 					<Button
 						onClick={onFinish}
@@ -54,7 +60,7 @@ function LoginComponent(props) {
 						className='login-button'
 						htmlType='submit'
 					>
-						Submit
+						Log in
 					</Button>
 				</Form>
 			</Col>

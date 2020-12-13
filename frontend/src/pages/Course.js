@@ -4,7 +4,7 @@ import CourseComponent from '../components/CourseComponents'
 export default function Course() {
 	return (
 		<>
-			<Template Component={CourseComponent} />
+			<Template ContentComponent={CourseComponent} />
 		</>
 	)
 }

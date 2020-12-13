@@ -4,7 +4,7 @@ import UserComponent from '../components/UserComponents/UserComponent'
 export default function User() {
 	return (
 		<>
-			<Template Component={UserComponent} />
+			<Template ContentComponent={UserComponent} />
 		</>
 	)
 }

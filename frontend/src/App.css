@@ -8,8 +8,33 @@ body {
 	margin: 0;
 }
 
+.data-text {
+	text-align: left;
+}
+
+.data-number {
+	text-align: right;
+}
+
+.data-code {
+	text-align: center;
+}
+
+.login-form {
+	margin-top: 20vh;
+}
 .login-button {
 	width: 100%;
+}
+
+.logout-menu {
+	position: fixed;
+	bottom: 0;
+}
+
+.warn-button {
+	color: orange;
+	border-color: orange;
 }
 
 .template-layout {
@@ -17,9 +42,24 @@ body {
 }
 
 .template-header {
-	background-color: aquamarine;
+	background-color: #0afff4;
+	box-shadow: 0 2px 5px rgba(0, 21, 41, 0.08);
+	text-align: right;
+	font-size: large;
+}
+
+.template-header div > span {
+	color: rgba(255, 255, 255, 0.95);
 }
 
 .template-content {
-	padding: 2rem;
+	margin: 2rem;
+}
+
+.table-striped-rows tr:nth-child(2n) td {
+	background-color: #e0e0e0;
+}
+.table-striped-rows tr > th {
+	background-color: #09b7e8;
+	color: rgba(255, 255, 255, 0.9);
 }

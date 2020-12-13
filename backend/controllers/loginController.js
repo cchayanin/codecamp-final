@@ -20,7 +20,7 @@ const loginUser = async (req, res) => {
 			}
 
 			const token = jwt.sign(payload, process.env.SECRET_OR_KEY, {
-				expiresIn: 3600,
+				expiresIn: 7200,
 			})
 			res.status(200).send({
 				token: token,

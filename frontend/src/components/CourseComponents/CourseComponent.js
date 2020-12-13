@@ -23,6 +23,8 @@ export default function CourseComponent() {
 	const path = '/courses'
 	const rowKey = 'type_round'
 	const dateFormat = 'YYYY/MM/DD'
+	const notificationDuration = 2
+	const notificationPlacement = 'bottomRight'
 
 	const fetchData = async () => {
 		const response = await axios.get(path)
@@ -30,19 +32,64 @@ export default function CourseComponent() {
 	}
 
 	const createRecord = async () => {
-		await axios.post(path, form.getFieldsValue())
+		await axios
+			.post(path, form.getFieldsValue())
+			.then(() => {
+				notification.success({
+					message: 'ข้อมูลถูกเพิ่มเรียบร้อยแล้ว',
+					duration: notificationDuration,
+					placement: notificationPlacement,
+				})
+			})
+			.catch((error) => {
+				notification.error({
+					message: 'การเพิ่มข้อมูลผิดพลาด',
+					duration: notificationDuration,
+					placement: notificationPlacement,
+				})
+			})
 		form.resetFields()
 		fetchData()
 	}
 
 	const updateRecord = async (id) => {
-		await axios.patch(`${path}/${id}`, form.getFieldsValue())
+		await axios
+			.patch(`${path}/${id}`, form.getFieldsValue())
+			.then(() => {
+				notification.success({
+					message: 'ข้อมูลถูกแก้ไขเรียบร้อยแล้ว',
+					duration: notificationDuration,
+					placement: notificationPlacement,
+				})
+			})
+			.catch((error) => {
+				notification.error({
+					message: 'การแก้ไขข้อมูลผิดพลาด',
+					duration: notificationDuration,
+					placement: notificationPlacement,
+				})
+			})
 		form.resetFields()
 		fetchData()
 	}
 
 	const deleteRecord = async (id) => {
-		await axios.delete(`${path}/${id}`)
+		await axios
+			.delete(`${path}/${id}`)
+			.then(() => {
+				notification.success({
+					message: 'ข้อมูลถูกลบเรียบร้อยแล้ว',
+					duration: notificationDuration,
+					placement: notificationPlacement,
+				})
+			})
+			.catch((error) => {
+				notification.error({
+					message: 'การลบข้อมูลผิดพลาด',
+					duration: notificationDuration,
+					placement: notificationPlacement,
+				})
+			})
 		form.resetFields()
 		fetchData()
 	}
@@ -58,20 +105,12 @@ export default function CourseComponent() {
 		setVisible(false)
 	}
 
-	const openNotification = () => {
-		notification.open({
-			message: 'Notification',
-			description: 'Description',
-			duration: 1.5,
-			placement: 'bottomRight',
-		})
-	}
-
 	const columns = [
 		{
 			title: 'รุ่นที่',
 			dataIndex: 'type_round',
 			key: 'type_round',
+			align: 'center',
 			sorter: (a, b) => a.type_round.localeCompare(b.type_round),
 			sortDirections: ['descend'],
 		},
@@ -79,24 +118,32 @@ export default function CourseComponent() {
 			title: 'ชื่อโครงการอบรม',
 			dataIndex: 'name',
 			key: 'name',
+			align: 'center',
+			render: (value) => {
+				return value ? <div className='data-text'>{`${value}`}</div> : null
+			},
 		},
 		{
 			title: 'วันที่เริ่ม',
 			dataIndex: 'start_date',
 			key: 'start_date',
+			align: 'center',
 		},
 		{
 			title: 'วันที่สิ้นสุด',
 			dataIndex: 'end_date',
 			key: 'end_date',
+			align: 'center',
 		},
 		{
 			title: '',
 			dataIndex: '',
 			key: 'edit',
+			align: 'center',
 			render: (record) => (
 				<>
 					<Button
+						className='warn-button'
 						onClick={() => {
 							setIsEdit(true)
 							showModal()
@@ -114,12 +161,23 @@ export default function CourseComponent() {
 					>
 						Edit
 					</Button>
+				</>
+			),
+		},
+		{
+			title: '',
+			dataIndex: '',
+			key: 'delete',
+			align: 'center',
+			render: (record) => (
+				<>
 					<Popconfirm
 						placement='left'
-						title={'Hello'}
+						title={() => {
+							return `ยืนยันการลบข้อมูล ${record.name}`
+						}}
 						onConfirm={() => {
 							deleteRecord(record.type_round)
-							openNotification()
 						}}
 						okText='ตกลง'
 						cancelText='ยกเลิก'
@@ -138,6 +196,7 @@ export default function CourseComponent() {
 					<Button
 						type='primary'
 						shape='circle'
+						size='large'
 						icon={<PlusOutlined />}
 						onClick={showModal}
 					></Button>
@@ -146,8 +205,8 @@ export default function CourseComponent() {
 			<Modal
 				visible={visible}
 				forceRender={true}
-				title='Create new'
-				okText='Create'
+				title='บันทึกข้อมูลการอบรม'
+				okText={isEdit ? 'Edit' : 'Create'}
 				cancelText='Cancel'
 				onOk={(record) => {
 					if (isEdit) {
@@ -186,6 +245,7 @@ export default function CourseComponent() {
 				</Form>
 			</Modal>
 			<Table
+				className='table-striped-rows'
 				columns={columns}
 				dataSource={dataSource}
 				rowKey={rowKey}

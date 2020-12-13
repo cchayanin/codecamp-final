@@ -4,7 +4,7 @@ import HomeComponent from '../components/HomeComponents'
 export default function Home() {
 	return (
 		<>
-			<Template Component={HomeComponent} />
+			<Template ContentComponent={HomeComponent} />
 		</>
 	)
 }

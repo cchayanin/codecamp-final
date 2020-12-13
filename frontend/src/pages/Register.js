@@ -4,7 +4,7 @@ import RegisterComponent from '../components/RegisterComponents'
 export default function Register() {
 	return (
 		<>
-			<Template Component={RegisterComponent} />
+			<Template ContentComponent={RegisterComponent} />
 		</>
 	)
 }

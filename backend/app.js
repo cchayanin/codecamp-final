@@ -16,10 +16,11 @@ app.use(express.urlencoded({ extended: false }))
 
 app.use('/', indexRouter)
 
-db.sequelize.sync({ force: true }).then(async () => {
+db.sequelize.sync({ force: false }).then(async () => {
 	const salt = bcryptjs.genSaltSync(12)
 	const hashedPassword = bcryptjs.hashSync(process.env.PASSWORD, salt)
 	try {
+		// add default user
 		await db.User.create({
 			username: 'admin',
 			password: hashedPassword,

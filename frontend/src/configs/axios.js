@@ -27,11 +27,16 @@ axios.interceptors.response.use(
 	},
 	(err) => {
 		if (err.response?.status === 401) {
-			localStorageService.removeToken()
-			window.location.reload()
 			notification.error({
 				message: 'กรุณาเข้าสู่ระบบใหม่',
 			})
+
+			//delay for show notification
+			setTimeout(() => {
+				localStorageService.removeToken()
+				window.location.reload()
+			}, 3000)
+
 			return Promise.reject(err)
 		}
 		return Promise.reject(err)

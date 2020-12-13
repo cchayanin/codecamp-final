@@ -2,7 +2,10 @@ const db = require('../models')
 const bcryptjs = require('bcryptjs')
 
 const getAllUser = async (req, res) => {
-	const users = await db.User.findAll({ where: { is_admin: false } })
+	const users = await db.User.findAll({
+		attributes: ['id', 'username', 'name'],
+		where: { is_admin: false },
+	})
 	res.status(200).send(users)
 }
 

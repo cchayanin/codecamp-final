@@ -35,10 +35,10 @@ const components = {
 const configRole = {
 	admin: {
 		allowedRoutes: [
+			components.user,
 			components.course,
 			components.person,
 			components.register,
-			components.user,
 			components.home,
 		],
 		redirectRoutes: '/',

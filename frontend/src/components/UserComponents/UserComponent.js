@@ -87,9 +87,7 @@ export default function PersonComponent() {
 						onClick={() => {
 							setIsEdit(true)
 							showModal()
-							form.setFieldsValue({
-								...record,
-							})
+							form.setFieldsValue(record)
 						}}
 						danger
 					>
@@ -119,6 +117,7 @@ export default function PersonComponent() {
 					<Button
 						type='primary'
 						shape='circle'
+						size='large'
 						icon={<PlusOutlined />}
 						onClick={showModal}
 					></Button>
@@ -160,7 +159,7 @@ export default function PersonComponent() {
 						label='Password'
 						rules={[{ required: true }]}
 					>
-						<Input.Password />
+						<Input.Password disabled={isEdit} />
 					</Form.Item>
 					<Form.Item
 						name='confirm'
@@ -181,7 +180,7 @@ export default function PersonComponent() {
 							}),
 						]}
 					>
-						<Input.Password />
+						<Input.Password disabled={isEdit} />
 					</Form.Item>
 					<Form.Item name='name' label='ชื่อ'>
 						<Input />
@@ -189,6 +188,7 @@ export default function PersonComponent() {
 				</Form>
 			</Modal>
 			<Table
+				className='table-striped-rows'
 				columns={columns}
 				dataSource={dataSource}
 				rowKey={rowKey}

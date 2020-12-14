@@ -4,7 +4,12 @@ import { Table } from 'antd'
 
 export default function HomeDisplay() {
 	const [registers, setRegisters] = useState([])
-	const path = '/registers'
+	const path = '/registers/home'
+	const prefixDescription = {
+		'001': 'นาย',
+		'002': 'นาง',
+		'003': 'นางสาว',
+	}
 
 	const fetchRegisters = async () => {
 		const httpResponse = await axios.get(path)
@@ -26,7 +31,6 @@ export default function HomeDisplay() {
 			title: 'ชื่อโครงการอบรม',
 			dataIndex: 'Course',
 			key: 'type_round',
-			width: '20%',
 			align: 'center',
 			render: (record) => {
 				return <div className='data-text'>{`${record.name}`}</div>
@@ -36,19 +40,21 @@ export default function HomeDisplay() {
 			title: 'ชื่อผู้เข้าอบรม',
 			dataIndex: 'Person',
 			key: 'citizen_id',
-			width: '20%',
 			align: 'center',
 			render: (record) => {
 				return (
-					<div className='data-text'>{`${record.prefix}${record.give_name} ${record.family_name}`}</div>
+					<div className='data-text'>
+						{`${prefixDescription[record.prefix]}${record.give_name} ${
+							record.family_name
+						}`}
+					</div>
 				)
 			},
 		},
 		{
-			title: 'ชื่อผู้เล่น',
+			title: 'ชื่อเล่น',
 			dataIndex: 'Person',
 			key: 'nickname',
-			width: '20%',
 			align: 'center',
 			render: (record) => {
 				return <div className='data-code'>{`${record.nickname}`}</div>
@@ -58,7 +64,6 @@ export default function HomeDisplay() {
 			title: 'โทรศัพท์มือถือ',
 			dataIndex: 'Person',
 			key: 'mobile_phone',
-			width: '15%',
 			align: 'center',
 			render: (record) => {
 				return <div className='data-code'>{`${record.mobile_phone}`}</div>
@@ -68,10 +73,11 @@ export default function HomeDisplay() {
 			title: 'อีเมล์',
 			dataIndex: 'Person',
 			key: 'email',
-			width: '20%',
 			align: 'center',
 			render: (record) => {
-				return <div className='data-text'>{`${record.email}`}</div>
+				return record.email ? (
+					<div className='data-text'>{`${record.email}`}</div>
+				) : null
 			},
 		},
 	]

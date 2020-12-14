@@ -1,9 +1,26 @@
 const db = require('../models')
+const moment = require('moment')
+const { Op } = require('sequelize')
+const dateNow = moment().format('YYYY-MM-DD')
 
 const getAllRegister = async (req, res) => {
 	const registers = await db.Register.findAll({
 		include: [db.Person, db.Course],
 	})
+	res.status(200).send(registers)
+}
+
+const getAllRegisterHome = async (req, res) => {
+	const registers = await db.Register.findAll({
+		include: [db.Person, db.Course],
+		where: {
+			[Op.and]: [
+				{ '$Course.start_date$': { [Op.lte]: dateNow } },
+				{ '$Course.end_date$': { [Op.gte]: dateNow } },
+			],
+		},
+	})
+
 	res.status(200).send(registers)
 }
 
@@ -22,12 +39,7 @@ const createRegister = async (req, res) => {
 		await db.Register.create({
 			...req.body,
 		})
-			.then(() => {
-				res.status(201).send({ message: 'Register was created' })
-			})
-			.catch((error) => {
-				res.status(400).send(error)
-			})
+		res.status(201).send({ message: 'Register was created' })
 	}
 }
 
@@ -68,6 +80,7 @@ const deleteRegister = async (req, res) => {
 
 module.exports = {
 	getAllRegister,
+	getAllRegisterHome,
 	createRegister,
 	updateRegister,
 	deleteRegister,

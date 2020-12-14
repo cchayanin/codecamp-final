@@ -207,14 +207,28 @@ export default function PersonComponent() {
 					<Form.Item
 						name='username'
 						label='Username'
-						rules={[{ required: true }]}
+						rules={[
+							{ required: true, message: 'ต้องระบุ Username' },
+							{
+								pattern: /^[a-z]{6,12}$/,
+								message:
+									'ต้องเป็นตัวอักษรภาษาอังกฤษตัวพิมพ์เล็กระหว่าง 6 ถึง 12 ตัวอักษร',
+							},
+						]}
 					>
 						<Input disabled={isEdit} />
 					</Form.Item>
 					<Form.Item
 						name='password'
 						label='Password'
-						rules={[{ required: true }]}
+						rules={[
+							{ required: true, message: 'ต้องระบุ Password' },
+							{
+								min: 6,
+								max: 12,
+								message: 'Password ต้องอยู่ระหว่าง 6 ถึง 12 ตัวอักษร',
+							},
+						]}
 					>
 						<Input.Password disabled={isEdit} />
 					</Form.Item>
@@ -226,6 +240,7 @@ export default function PersonComponent() {
 						rules={[
 							{
 								required: true,
+								message: 'ต้องระบุรหัสยืนยัน Password',
 							},
 							({ getFieldValue }) => ({
 								validator(rule, value) {

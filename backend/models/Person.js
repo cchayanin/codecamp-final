@@ -66,12 +66,14 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		{
 			tableName: 'person',
+			timestamps: false,
 		},
 	)
 
 	Person.associate = (models) => {
 		Person.hasMany(models.Register, {
 			foreignKey: 'citizen_id',
+			onDelete: 'RESTRICT',
 		})
 	}
 

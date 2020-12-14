@@ -25,6 +25,12 @@ export default function PersonComponent() {
 	const notificationDuration = 2
 	const notificationPlacement = 'bottomRight'
 
+	const prefixDescription = {
+		'001': 'นาย',
+		'002': 'นาง',
+		'003': 'นางสาว',
+	}
+
 	const fetchData = async () => {
 		const response = await axios.get(path)
 		setDataSource(response.data)
@@ -118,6 +124,9 @@ export default function PersonComponent() {
 			dataIndex: 'prefix',
 			key: 'prefix',
 			align: 'center',
+			render: (value) => {
+				return value ? <>{`${prefixDescription[value]}`}</> : null
+			},
 		},
 		{
 			title: 'ชื่อ',
@@ -181,7 +190,9 @@ export default function PersonComponent() {
 					<Popconfirm
 						placement='left'
 						title={() => {
-							return `ยืนยันการลบข้อมูล ${record.prefix}${record.give_name} ${record.family_name}`
+							return `ยืนยันการลบข้อมูล ${prefixDescription[record.prefix]}${
+								record.give_name
+							} ${record.family_name}`
 						}}
 						onConfirm={() => {
 							deleteRecord(record.citizen_id)
@@ -244,7 +255,7 @@ export default function PersonComponent() {
 						rules={[
 							{ required: true, message: 'ต้องระบุเลขประจำตัว' },
 							{
-								pattern: /[0-9]{13}/,
+								pattern: /^[0-9]{13}$/,
 								message: 'เลขประจำตัวต้องเป็นตัวเลขและมี 13หลัก เท่านั้น',
 							},
 						]}
@@ -257,9 +268,9 @@ export default function PersonComponent() {
 						rules={[{ required: true, message: 'ต้องระบุคำนำหน้าชื่อ' }]}
 					>
 						<Select>
-							<Option value='นาย'>นาย</Option>
-							<Option value='นาง'>นาง</Option>
-							<Option value='นางสาว'>นางสาว</Option>
+							<Option value='001'>นาย</Option>
+							<Option value='002'>นาง</Option>
+							<Option value='003'>นางสาว</Option>
 						</Select>
 					</Form.Item>
 					<Form.Item
@@ -286,17 +297,20 @@ export default function PersonComponent() {
 					<Form.Item
 						label='โทรศัพท์มือถือ'
 						name='mobile_phone'
-						rules={[{ required: true, message: 'ต้องระบุโทรศัพท์มือถือ' }]}
+						rules={[
+							{ required: true, message: 'ต้องระบุโทรศัพท์มือถือ' },
+							{
+								pattern: /^[0-9]{10}$/,
+								message: 'โทรศัพท์มือต้องเป็นตัวเลขและมี 10 หลัก',
+							},
+						]}
 					>
 						<Input />
 					</Form.Item>
 					<Form.Item
 						label='อีเมล์'
 						name='email'
-						rules={[
-							{ required: true, message: 'ต้องระบุอีเมล์' },
-							{ type: 'email', message: 'รูปแบบอีเมล์ไม่ถูกต้อง' },
-						]}
+						rules={[{ type: 'email', message: 'รูปแบบอีเมล์ไม่ถูกต้อง' }]}
 					>
 						<Input />
 					</Form.Item>

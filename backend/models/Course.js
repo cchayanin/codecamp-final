@@ -18,12 +18,14 @@ module.exports = (sequelize, DataTypes) => {
 		},
 		{
 			tableName: 'course',
+			timestamps: false,
 		},
 	)
 
 	Course.associate = (models) => {
 		Course.hasMany(models.Register, {
 			foreignKey: 'type_round',
+			onDelete: 'RESTRICT',
 		})
 	}
 

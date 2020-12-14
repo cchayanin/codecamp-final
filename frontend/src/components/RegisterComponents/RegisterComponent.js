@@ -2,13 +2,13 @@ import { PlusOutlined } from '@ant-design/icons'
 import {
 	Form,
 	notification,
-	Input,
 	Table,
 	Tooltip,
 	Button,
 	Row,
 	Checkbox,
 	Popconfirm,
+	Select,
 } from 'antd'
 import Modal from 'antd/lib/modal/Modal'
 import { useEffect, useState } from 'react'
@@ -16,12 +16,47 @@ import axios from '../../configs/axios'
 
 export default function RegisterComponent() {
 	const [dataSource, setDataSource] = useState()
+	const [course, setCourse] = useState([])
+	const [person, setPerson] = useState([])
 	const [visible, setVisible] = useState(false)
 	const [isEdit, setIsEdit] = useState(false)
 	const [form] = Form.useForm()
+	const { Option } = Select
 	const path = '/registers'
 	const notificationDuration = 2
 	const notificationPlacement = 'bottomRight'
+
+	const prefixDescription = {
+		'001': 'นาย',
+		'002': 'นาง',
+		'003': 'นางสาว',
+	}
+
+	const fetchCourse = async () => {
+		const response = await axios.get('/courses')
+		const data = response.data
+
+		const options = data.map((value) => ({
+			key: value.type_round,
+			value: value.type_round,
+			name: value.name,
+		}))
+		setCourse(options)
+	}
+
+	const fetchPerson = async () => {
+		const response = await axios.get('/persons')
+		const data = response.data
+
+		const options = data.map((value) => ({
+			key: value.citizen_id,
+			value: value.citizen_id,
+			name: `${prefixDescription[value.prefix]}${value.give_name} ${
+				value.family_name
+			}`,
+		}))
+		setPerson(options)
+	}
 
 	const fetchData = async () => {
 		const response = await axios.get(path)
@@ -183,7 +218,9 @@ export default function RegisterComponent() {
 				<>
 					<Popconfirm
 						placement='left'
-						title={'Hello'}
+						title={() => {
+							return `ยืนยันการลบข้อมูลการลงทะเบียน`
+						}}
 						onConfirm={() => {
 							deleteRecord(record.type_round, record.citizen_id)
 						}}
@@ -247,14 +284,26 @@ export default function RegisterComponent() {
 						name='type_round'
 						rules={[{ required: true, message: 'ต้องระบุรหัสโครงการ' }]}
 					>
-						<Input disabled={isEdit} />
+						<Select disabled={isEdit} onClick={fetchCourse}>
+							{course.map((value) => (
+								<Option key={value.key} value={value.value}>
+									{value.name}
+								</Option>
+							))}
+						</Select>
 					</Form.Item>
 					<Form.Item
 						label='ผู้เข้าอบรม'
 						name='citizen_id'
-						rules={[{ required: true, message: 'ผู้เข้าอบรม' }]}
+						rules={[{ required: true, message: 'ต้องระบุผู้เข้าอบรม' }]}
 					>
-						<Input disabled={isEdit} />
+						<Select disabled={isEdit} onClick={fetchPerson}>
+							{person.map((value) => (
+								<Option key={value.key} value={value.value}>
+									{value.name}
+								</Option>
+							))}
+						</Select>
 					</Form.Item>
 					<Form.Item
 						label='ค่าธรรมเนียม'

@@ -63,8 +63,10 @@ const deleteCourse = async (req, res) => {
 	})
 
 	if (targetCourse) {
-		await targetCourse.destroy()
-		res.status(204).send()
+		await targetCourse
+			.destroy()
+			.then(() => res.status(204).send())
+			.catch(() => res.status(400).send())
 	} else {
 		res.status(404).send({ message: 'Course was not found.' })
 	}

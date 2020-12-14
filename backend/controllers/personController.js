@@ -61,8 +61,10 @@ const deletePerson = async (req, res) => {
 	})
 
 	if (targetPerson) {
-		await targetPerson.destroy()
-		res.status(204).send()
+		await targetPerson
+			.destroy()
+			.then(() => res.status(204).send())
+			.catch(() => res.status(400).send())
 	} else {
 		res.status(404).send({ message: 'Person not found.' })
 	}

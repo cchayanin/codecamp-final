@@ -22,6 +22,7 @@ const createUser = async (req, res) => {
 	} else {
 		const salt = bcryptjs.genSaltSync(12)
 		const hashedPassword = bcryptjs.hashSync(req.body.password, salt)
+
 		await db.User.create({
 			...req.body,
 			password: hashedPassword,

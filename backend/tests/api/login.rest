@@ -1,7 +1,0 @@
-POST http://localhost:8000/login
-content-type: application/x-www-form-urlencoded
-
-{
-	username=staff&password=123456789
-}
-

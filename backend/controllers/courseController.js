@@ -5,19 +5,6 @@ const getAllCourse = async (req, res) => {
 	res.status(200).send(courses)
 }
 
-const getCourse = async (req, res) => {
-	const course = await db.Course.findOne({
-		where: {
-			type_round: req.params.type_round,
-		},
-	})
-	if (course) {
-		res.status(200).send(course)
-	} else {
-		res.status(404).send({ message: 'Course not found.' })
-	}
-}
-
 const createCourse = async (req, res) => {
 	// * check record exists.
 	const targetCourse = await db.Course.findOne({
@@ -74,7 +61,6 @@ const deleteCourse = async (req, res) => {
 
 module.exports = {
 	getAllCourse,
-	getCourse,
 	createCourse,
 	updateCourse,
 	deleteCourse,

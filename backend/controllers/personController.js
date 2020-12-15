@@ -5,18 +5,6 @@ const getAllPerson = async (req, res) => {
 	res.status(200).send(persons)
 }
 
-const getPerson = async (req, res) => {
-	const person = await db.Person.findOne({
-		where: {
-			citizen_id: req.params.id,
-		},
-	})
-	if (person) {
-		res.status(200).send(person)
-	} else {
-		res.status(404).send({ message: 'Person not found.' })
-	}
-}
 const createPerson = async (req, res) => {
 	// * check record exists.
 	const targetPerson = await db.Person.findOne({
@@ -72,7 +60,6 @@ const deletePerson = async (req, res) => {
 
 module.exports = {
 	getAllPerson,
-	getPerson,
 	createPerson,
 	updatePerson,
 	deletePerson,

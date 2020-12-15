@@ -44,8 +44,8 @@ body {
 }
 
 .template-header {
-	background-color: #0afff4;
-	box-shadow: 0 2px 5px rgba(0, 21, 41, 0.08);
+	background-color: #0ac6ff;
+	box-shadow: 0 3px 5px rgba(0, 21, 41, 0.5);
 	text-align: right;
 	font-size: large;
 }

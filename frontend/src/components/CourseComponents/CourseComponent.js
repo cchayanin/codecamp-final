@@ -250,10 +250,42 @@ export default function CourseComponent() {
 					>
 						<Input />
 					</Form.Item>
-					<Form.Item name='start_date' label='วันที่เริ่มต้น'>
+					<Form.Item
+						name='start_date'
+						label='วันที่เริ่มต้น'
+						dependencies={['end_date']}
+						rules={[
+							({ getFieldValue }) => ({
+								validator(_, value) {
+									if (value <= getFieldValue('end_date')) {
+										return Promise.resolve()
+									}
+									return Promise.reject(
+										'วันที่เริ่มต้นต้องน้อยกว่าหรือเท่ากับวันที่สิ้นสุด',
+									)
+								},
+							}),
+						]}
+					>
 						<DatePicker format={dateFormat} />
 					</Form.Item>
-					<Form.Item name='end_date' label='วันที่สิ้นสุด'>
+					<Form.Item
+						name='end_date'
+						label='วันที่สิ้นสุด'
+						dependencies={['start_date']}
+						rules={[
+							({ getFieldValue }) => ({
+								validator(_, value) {
+									if (getFieldValue('start_date') <= value) {
+										return Promise.resolve()
+									}
+									return Promise.reject(
+										'วันที่สิ้นสุดต้องมากกว่าหรือเท่ากับวันที่เริ่มต้น',
+									)
+								},
+							}),
+						]}
+					>
 						<DatePicker format={dateFormat} />
 					</Form.Item>
 				</Form>

@@ -185,7 +185,7 @@ export default function RegisterComponent() {
 			},
 		},
 		{
-			title: '',
+			title: 'แก้ไข',
 			dataIndex: '',
 			key: 'edit',
 			align: 'center',
@@ -209,7 +209,7 @@ export default function RegisterComponent() {
 			),
 		},
 		{
-			title: '',
+			title: 'ลบ',
 			dataIndex: '',
 			key: 'delete',
 			align: 'center',

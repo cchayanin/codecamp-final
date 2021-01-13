@@ -159,7 +159,7 @@ export default function PersonComponent() {
 			align: 'center',
 		},
 		{
-			title: '',
+			title: 'แก้ไข',
 			dataIndex: '',
 			key: 'edit',
 			align: 'center',
@@ -181,7 +181,7 @@ export default function PersonComponent() {
 			),
 		},
 		{
-			title: '',
+			title: 'ลบ',
 			dataIndex: '',
 			key: 'delete',
 			align: 'center',
